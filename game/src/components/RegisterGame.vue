@@ -3,7 +3,7 @@
     <main class="main-content">
       <div class="form-card">
         <h1>Selamat datang di laman Register EBT Game</h1>
-        <p class="tagline">Break the mystery immediately!</p>
+        <p class="tagline">Break the mys!</p>
         <form @submit.prevent="handleRegister" class="register-form">
           <div class="form-group">
             <label for="regUsername">Username</label>

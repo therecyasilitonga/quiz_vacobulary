@@ -4,37 +4,44 @@
       <div class="profile-card">
         <h1>Profil Pemain</h1>
 
+        <!-- AVATAR -->
         <div class="profile-avatar-section">
           <div class="avatar-container">
-            <img :src="profileImage" alt="Profile Avatar" class="profile-avatar" />
+            <img :src="profileImage" class="profile-avatar" />
           </div>
-          <input type="file" @change="handleImageUpload" accept="image/*" class="file-input" id="avatarUpload" />
+
+          <input type="file" id="avatarUpload" class="file-input"
+            accept="image/*" @change="handleImageUpload" />
           <label for="avatarUpload" class="custom-file-upload">Pilih Avatar</label>
-          <button @click="uploadImage" class="update-button">Ubah Avatar</button>
+
+          <button @click="uploadImage" class="update-button">
+            Ubah Avatar
+          </button>
         </div>
 
+        <!-- FORM -->
         <form @submit.prevent="updateProfile" class="profile-form">
           <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" v-model="profileData.username" placeholder="Masukkan Username Baru" required />
+            <label>Username</label>
+            <input type="text" v-model="profileData.username" required />
           </div>
 
           <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" v-model="profileData.email" placeholder="Masukkan Email Baru" required />
+            <label>Email</label>
+            <input type="email" v-model="profileData.email" required />
           </div>
 
           <div class="form-group">
-            <label for="newPassword">Password Baru</label>
-            <input type="password" id="newPassword" v-model="profileData.newPassword" placeholder="Biarkan kosong jika tidak ingin mengubah" />
+            <label>Password Baru</label>
+            <input type="password" v-model="profileData.newPassword" />
           </div>
 
           <div class="form-group">
-            <label for="confirmPassword">Konfirmasi Password Baru</label>
-            <input type="password" id="confirmPassword" v-model="profileData.confirmPassword" placeholder="Konfirmasi Password Baru" />
+            <label>Konfirmasi Password</label>
+            <input type="password" v-model="profileData.confirmPassword" />
           </div>
 
-          <button type="submit" class="submit-button">Update Profil</button>
+          <button class="submit-button">Update Profil</button>
         </form>
 
         <p v-if="message" :class="messageType" class="message">{{ message }}</p>
@@ -44,87 +51,93 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import { useAuthStore } from '../stores/auth';
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "../stores/auth";
 
 const router = useRouter();
 const auth = useAuthStore();
 
 const profileData = ref({
-  username: '',
-  email: '',
-  newPassword: '',
-  confirmPassword: '',
+  username: "",
+  email: "",
+  newPassword: "",
+  confirmPassword: "",
 });
 
-const profileImage = ref('../assets/EBT.svg');
+const profileImage = ref("/Profile Default.svg");
 const selectedFile = ref(null);
 
-const message = ref('');
-const messageType = ref('');
+const message = ref("");
+const messageType = ref("");
 
 onMounted(() => {
-  if (!auth.isLoggedIn || !auth.user) {
-    router.push('/login');
-  } else {
-    profileData.value.username = auth.user.username || 'Pemain';
-    profileData.value.email = auth.user.email || 'pemain@example.com';
-    // Gunakan avatarUrl dari auth store jika ada, jika tidak, default ke EBT.svg
-    profileImage.value = auth.user.avatarUrl || '../assets/EBT.svg';
-  }
+  if (!auth.isLoggedIn) return router.push("/login");
+
+  profileData.value.username = auth.user.username;
+  profileData.value.email = auth.user.email;
+
+  profileImage.value = auth.user.avatarUrl || "/Profile Default.svg";
 });
 
+// PREVIEW IMAGE
 const handleImageUpload = (event) => {
-  selectedFile.value = event.target.files[0];
-  if (selectedFile.value) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      profileImage.value = e.target.result;
-    };
-    reader.readAsDataURL(selectedFile.value);
-  }
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    profileImage.value = e.target.result;
+    auth.updateUser({ avatarUrl: e.target.result }); // <-- update store
+  };
+  reader.readAsDataURL(file);
 };
 
-const uploadImage = async () => {
-  if (!selectedFile.value) {
-    setMessage('Pilih gambar untuk diunggah.', 'error');
-    return;
-  }
 
-  setMessage('Avatar berhasil diperbarui! (Simulasi)', 'success');
-  console.log('Gambar diunggah (simulasi):', selectedFile.value.name);
+// SAVE AVATAR
+const uploadImage = () => {
+  if (!selectedFile.value)
+    return setMessage("Pilih gambar dulu!", "error");
 
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
   auth.updateUser({ avatarUrl: profileImage.value });
+  setMessage("Avatar berhasil diperbarui!", "success");
 
   selectedFile.value = null;
-  document.getElementById('avatarUpload').value = '';
+  document.getElementById("avatarUpload").value = "";
 };
 
-const updateProfile = async () => {
-  if (profileData.value.newPassword && profileData.value.newPassword !== profileData.value.confirmPassword) {
-    setMessage('Password baru dan konfirmasi password tidak cocok!', 'error');
-    return;
+// UPDATE PROFILE
+const updateProfile = () => {
+  if (
+    profileData.value.newPassword &&
+    profileData.value.newPassword !== profileData.value.confirmPassword
+  ) {
+    return setMessage("Password tidak cocok!", "error");
   }
 
-  setMessage('Profil berhasil diperbarui! (Simulasi)', 'success');
-  profileData.value.newPassword = '';
-  profileData.value.confirmPassword = '';
-  console.log('Profil diperbarui (simulasi):', profileData.value.username, profileData.value.email);
-  auth.updateUser({ username: profileData.value.username, email: profileData.value.email });
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  auth.updateUser({
+    username: profileData.value.username,
+    email: profileData.value.email,
+  });
+
+  setMessage("Profil berhasil diperbarui!", "success");
+
+  profileData.value.newPassword = "";
+  profileData.value.confirmPassword = "";
 };
 
 const setMessage = (msg, type) => {
   message.value = msg;
   messageType.value = type;
-  setTimeout(() => {
-    message.value = '';
-  }, 3000);
+  setTimeout(() => (message.value = ""), 2500);
 };
 </script>
+
+<style scoped>
+/* Styling kamu tetap dipertahankan 100% */
+/* Tidak diubah supaya tidak merusak layout */
+</style>
+
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');

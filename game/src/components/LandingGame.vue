@@ -1,7 +1,7 @@
 <template>
   <div class="landing-content-wrapper">
     <main class="main-content">
-      <h1>Selamat Datang di ESCAPE THE BUNKER–MEMORY TRAP GAME 👾</h1>
+      <h1>Selamat Datang di English Brain Training” 👾</h1>
       <p>
         Game petualangan teks untuk memulihkan ingatan Detha dan memecahkan misteri bunker.
       </p>

@@ -1,60 +1,59 @@
 <template>
   <div class="info-content-wrapper">
     <main class="main-content">
+
+      <!-- ABOUT -->
       <section class="section">
-        <h1>🎮 About Escape The Bunker – Memory Trap</h1>
+        <h1>🎮 About EBT Character Analyzer Game</h1>
         <p>
-          A text-based adventure game where you help Bernadeth Calestika (Detha) 
-          recover her lost memories to uncover the mystery inside the bunker.
+          EBT Character Analyzer adalah game interaktif yang menganalisis
+          kepribadian pemain berdasarkan cara mereka menjawab serangkaian pertanyaan.
+          Setiap jawaban memiliki bobot tertentu yang mencerminkan sifat, kecenderungan,
+          dan pola pengambilan keputusan pemain.
         </p>
       </section>
 
+      <!-- HOW TO PLAY -->
       <section class="section">
         <h2>📜 How to Play</h2>
         <ul>
-          <li>Read the story carefully.</li>
-          <li>Answer memory questions to help Detha recover her past.</li>
-          <li>Solve secret codes using logic and clues.</li>
-          <li>Find Zayden and uncover the truth behind the mission.</li>
+          <li>Baca setiap pertanyaan dengan cermat.</li>
+          <li>Pilih jawaban yang paling menggambarkan diri Anda.</li>
+          <li>Tidak ada jawaban benar atau salah — semua mewakili karakter Anda.</li>
+          <li>Setiap pertanyaan memiliki skor unik yang menentukan tipe karakter akhir.</li>
+          <li>Di akhir permainan, Anda akan melihat analisis lengkap mengenai karakter Anda.</li>
         </ul>
       </section>
 
+      <!-- WHAT THE GAME MEASURES -->
       <section class="section">
-        <h2>🕵️‍♀️ Background Story</h2>
+        <h2>🧠 What This Game Measures</h2>
         <p>
-          Bernadeth Calestika, a 29-year-old undercover agent known as Detha, is sent deep 
-          into the southern forests of Kalimantan to investigate illegal experiments conducted 
-          by four dangerous scientists: Robert, Max, and the twin brothers Julian and Axel Cathrich.
-          She is not alone—her mission team includes young agents Olivia, Patricia, Winona, Kenzo, Rafael, 
-          and Zayden, all operating under the command of Leonard Paul Gabriel. But the mission turns into 
-          a disaster when a violent confrontation results in the deaths of four teammates—Olivia, Kenzo, Rafael, 
-          and Patricia—while Winona escapes into the jungle. Detha and Zayden are captured separately, and during 
-          a brutal fight with the Cathrich twins, Detha suffers a severe head injury that wipes out her memory.
-          She wakes up alone inside an underground bunker, confused and unable to remember who she is or what happened. 
-          The player must help her recover her memories, uncover the truth, find Zayden, and escape the bunker—without 
-          realizing that the greatest enemy is not the scientists, but someone from her own side.
+          Game ini dirancang untuk membaca pola kepribadian berdasarkan:
         </p>
-        <p>
-          Kamu akan membantu Detha memulihkan ingatan,
-          keluar dari bunker, menyelamatkan Zayden,
-          dan menguak rahasia besar bahwa Komandan Paul adalah dalang di balik semua ini.
-        </p>
+        <ul>
+          <li>Cara Anda merespons situasi tertentu.</li>
+          <li>Preferensi pribadi dalam pengambilan keputusan.</li>
+          <li>Reaksi spontan terhadap pilihan cepat.</li>
+          <li>Gaya berpikir dominan (logis, emosional, spontan, terstruktur).</li>
+          <li>Kecenderungan karakter seperti leadership, care, adaptif, atau analytical.</li>
+        </ul>
       </section>
 
+      <!-- DEVELOPER -->
       <section class="section">
         <h2>👨‍💻 Developer</h2>
         <p>
-          Game ini dikembangkan oleh .
+          Game ini dikembangkan oleh <strong>KELOMPOK 1</strong> sebagai project game
+          analisis kepribadian berbasis pertanyaan interaktif.
         </p>
       </section>
+
     </main>
   </div>
 </template>
 
 <script setup>
-// useRouter dan useAuthStore tidak lagi diperlukan di sini karena
-// navbar dan logika login/logout sudah ditangani di App.vue.
-// Komponen InfoGame.vue ini hanya menampilkan konten statis.
 </script>
 
 <style scoped>
@@ -62,12 +61,11 @@
 
 .info-content-wrapper {
   background-color: #111;
-  color: #eee;
+  color: #9dff9d; /* teks hijau neon muda */
   font-family: 'Press Start 2P', monospace;
   min-height: calc(100vh - var(--navbar-height, 0px) - var(--footer-height, 0px));
   display: flex;
   flex-direction: column;
-  flex: 1;
 }
 
 .main-content {
@@ -86,31 +84,30 @@
   color: #0f0;
   font-size: 1rem;
   margin-bottom: 1rem;
-  /* Judul tetap rata kiri secara default atau eksplisit jika diperlukan */
-  text-align: left; /* Menjamin rata kiri */
+  text-align: left;
+  text-shadow: 0 0 6px rgba(0, 255, 0, 0.7);
 }
 
 .section p {
   font-size: 0.75rem;
   line-height: 1.6;
-  text-align: justify; /* PENTING: Membuat paragraf rata kiri-kanan (justify) */
+  text-align: justify;
+  color: #9dff9d;
 }
 
 .section ul {
-  list-style-type: square;
   padding-left: 1.5rem;
-  /* text-align: justify; TIDAK DIAPLIKASIKAN DI SINI, tapi akan diterapkan pada LI */
 }
 
 .section ul li {
   margin-bottom: 0.5rem;
-  font-size: 0.75rem; /* Pastikan font-size sama dengan p */
-  line-height: 1.6; /* Pastikan line-height sama dengan p */
-  text-align: justify; /* PENTING: Membuat list item rata kiri-kanan (justify) */
+  font-size: 0.75rem;
+  line-height: 1.6;
+  text-align: justify;
+  color: #9dff9d;
 }
 
-
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 768px) {
   .main-content {
     padding: 1.5rem;
@@ -120,7 +117,7 @@
     font-size: 0.9rem;
   }
   .section p,
-  .section ul li { /* Terapkan juga pada li di media query */
+  .section ul li {
     font-size: 0.7rem;
   }
 }
@@ -134,7 +131,7 @@
     font-size: 0.8rem;
   }
   .section p,
-  .section ul li { /* Terapkan juga pada li di media query */
+  .section ul li {
     font-size: 0.65rem;
   }
 }

@@ -136,6 +136,8 @@
         </div>
       </section>
 
+      
+
       <!-- ===== GAME OVER / SUMMARY ===== -->
       <section v-if="gameState === 'game_over'" class="menu-screen">
         <h2>🏁 Game Over</h2>
@@ -151,6 +153,9 @@
     </main>
   </div>
 </template>
+
+
+<PersonalitySystem ref="pSystem" @done="savePersonality" />
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
@@ -206,34 +211,170 @@ const vocabQuestions = [
   {
     question: "What is the meaning of 'jungle'?",
     clue: 'A place full of plants and animals.',
-    choices: ['A large desert','A thick forest with many plants and animals','A dry grassland','A snowy mountain'],
+    choices: [
+      'A large desert',
+      'A thick forest with many plants and animals',
+      'A dry grassland',
+      'A snowy mountain'
+    ],
     answerIndex: 1
   },
   {
     question: "What is a 'vine'?",
     clue: 'It climbs.',
-    choices: ['A small rock','A long climbing plant','A type of insect','A large tree stump'],
+    choices: [
+      'A small rock',
+      'A long climbing plant',
+      'A type of insect',
+      'A large tree stump'
+    ],
     answerIndex: 1
   },
   {
     question: "The word 'predator' refers to…",
     clue: 'It hunts.',
-    choices: ['An animal that eats plants','An animal that hunts other animals','A baby animal','A slow-moving reptile'],
+    choices: [
+      'An animal that eats plants',
+      'An animal that hunts other animals',
+      'A baby animal',
+      'A slow-moving reptile'
+    ],
     answerIndex: 1
   },
   {
     question: "What is the meaning of 'wildlife'?",
     clue: 'Free animals.',
-    choices: ['Animals kept in zoos','Animals living freely in nature','Farm animals','Pets'],
+    choices: [
+      'Animals kept in zoos',
+      'Animals living freely in nature',
+      'Farm animals',
+      'Pets'
+    ],
     answerIndex: 1
   },
   {
     question: "What is a 'canopy' in the jungle?",
     clue: 'A natural roof.',
-    choices: ['The ground covered with leaves','A cave where tigers live','The top layer of the trees forming a roof','A place with many rivers'],
+    choices: [
+      'The ground covered with leaves',
+      'A cave where tigers live',
+      'The top layer of the trees forming a roof',
+      'A place with many rivers'
+    ],
     answerIndex: 2
+  },
+  {
+    question: "“Endangered” animals are animals that are…",
+    clue: 'In danger.',
+    choices: [
+      'Very common',
+      'Newly discovered',
+      'At risk of extinction',
+      'Safe in the jungle'
+    ],
+    answerIndex: 2
+  },
+  {
+    question: "What does the word 'riverbank' mean?",
+    clue: 'Beside the water.',
+    choices: [
+      'A bank for storing money',
+      'The land along the side of a river',
+      'A deep part of the river',
+      'A waterfall'
+    ],
+    answerIndex: 1
+  },
+  {
+    question: "The word 'habitat' means…",
+    clue: 'Natural home.',
+    choices: [
+      'A group of animals',
+      'A type of weather',
+      'The natural home of a plant or animal',
+      'A jungle tool'
+    ],
+    answerIndex: 2
+  },
+  {
+    question: "What is a 'rainforest'?",
+    clue: 'Rains a lot.',
+    choices: [
+      'A forest with no trees',
+      'A forest covered in snow',
+      'A forest with heavy rainfall and many species',
+      'A forest made of bamboo'
+    ],
+    answerIndex: 2
+  },
+  {
+    question: "'Claws' are…",
+    clue: 'Sharp.',
+    choices: [
+      'Animal ears',
+      'Animal tails',
+      'Sharp nails of animals',
+      'Animal noses'
+    ],
+    answerIndex: 2
+  },
+  {
+    question: "What does 'camouflage' mean?",
+    clue: 'Hide by blending.',
+    choices: [
+      'To run very fast',
+      'To sleep during the day',
+      'To blend into the environment to hide',
+      'To make loud sounds'
+    ],
+    answerIndex: 2
+  },
+  {
+    question: "A 'tribe' refers to…",
+    clue: 'People group.',
+    choices: [
+      'A group of trees',
+      'A group of people with the same culture',
+      'A large animal',
+      'A small hut in the jungle'
+    ],
+    answerIndex: 1
+  },
+  {
+    question: "The word 'swamp' means…",
+    clue: 'Muddy wetland.',
+    choices: [
+      'A rocky hill',
+      'Wet, muddy land with water',
+      'A dry valley',
+      'A desert area'
+    ],
+    answerIndex: 1
+  },
+  {
+    question: "'Poacher' means…",
+    clue: 'Illegal hunter.',
+    choices: [
+      'A forest farmer',
+      'A person who studies plants',
+      'A person who hunts animals illegally',
+      'A jungle guide'
+    ],
+    answerIndex: 2
+  },
+  {
+    question: "What is the meaning of 'creature'?",
+    clue: 'Any animal.',
+    choices: [
+      'A type of plant',
+      'Any living animal',
+      'A piece of wood',
+      'A rock in the river'
+    ],
+    answerIndex: 1
   }
 ];
+
 
 const currentVocabIndex = ref(0);
 const vocabScore = ref(0);
@@ -442,239 +583,417 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* ---- theme ---- */
-:root{
-  --bg:#0b0b0b;
-  --panel:#151d17;
-  --accent:#22ff88;
-  --accent-soft:rgba(34,255,136,0.22);
-  --muted:#9aa0a6;
-  --glass:rgba(255,255,255,0.06);
-  --radius:14px;
-  --card-bg:rgba(255,255,255,0.04);
-  --transition:0.22s cubic-bezier(.25,.46,.45,.94);
+/* ---- Theme ---- */
+:root {
+  --bg: #0b0b0b;
+  --panel: #91b49a;
+  --accent: #22ff88;
+  --accent-soft: rgba(185, 206, 195, 0.22);
+  --muted: #9aa0a6;
+  --glass: rgba(255,255,255,0.06);
+  --radius: 14px;
+  --card-bg: rgba(255,255,255,0.04);
+  --transition: 0.22s cubic-bezier(.25,.46,.45,.94);
 }
 
-.playing-game-content-wrapper{
-  min-height:100vh;
-  background:radial-gradient(circle at 20% 20%, #0f2e21 0%, #06130b 100%);
-  color:#e9fff0;
-  font-family:Inter, system-ui, "Segoe UI", Roboto, Arial;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:48px 20px;
+/* ===== FIX CARD VISIBILITY ===== */
+.menu-card {
+  background: rgba(255, 255, 255, 0.08); /* lebih terang */
+  border: 1px solid rgba(255,255,255,0.14);
+  color: #f4fff7; /* teks jadi putih */
 }
 
-/* COUNTDOWN OVERLAY */
-.countdown-screen{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.85);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:9999;
-}
-.countdown-inner{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  gap:10px;
-}
-.countdown-number{
-  font-size:5.2rem;
-  font-weight:900;
-  color:var(--accent);
-  text-shadow:0 0 28px var(--accent-soft);
-}
-.countdown-number.go{
-  font-size:4.2rem;
+/* Hover lebih bersih */
+.menu-card:hover {
+  background: rgba(142, 170, 156, 0.12);
+  border-color: var(--accent);
+  transform: translateY(-6px) scale(1.02);
 }
 
-/* main */
-.game-content{
-  width:100%;
-  max-width:980px;
-  backdrop-filter:blur(12px);
+/* ===== FIX TITLE ===== */
+.title {
+  color: #ffffff;
+  font-size: 2.8rem;
+  font-weight: 800;
+  text-shadow: 0 0 12px rgba(187, 199, 193, 0.35);
 }
 
-/* Menu */
-.menu-screen{text-align:center;}
-.title{
-  font-size:2.6rem;
-  margin-bottom:.3rem;
-  color:var(--accent);
-  font-weight:700;
-  text-shadow:0 0 18px var(--accent-soft);
-}
-.subtitle{ color:var(--muted); font-size:1.05rem; }
-
-.menu-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:18px;
-  margin-top:24px;
-}
-.menu-card{
-  background:var(--card-bg);
-  border:1px solid var(--accent-soft);
-  padding:24px;
-  border-radius:var(--radius);
-  cursor:pointer;
-  text-align:left;
-  transition:var(--transition);
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  backdrop-filter:blur(8px);
-  box-shadow:0 4px 18px rgba(0,0,0,0.35);
-}
-.menu-card:hover{
-  transform:translateY(-8px) scale(1.02);
-  box-shadow:0 12px 35px rgba(0,0,0,0.65);
-  border-color:var(--accent);
-}
-.card-icon{ font-size:1.9rem; color:var(--accent); }
-
-/* game screen */
-.game-screen{
-  background:var(--card-bg);
-  padding:24px;
-  border-radius:var(--radius);
-  border:1px solid var(--accent-soft);
-  backdrop-filter:blur(10px);
-  box-shadow:0 6px 20px rgba(0,0,0,0.4);
-}
-.game-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:16px;
-  margin-bottom:20px;
-}
-.back-btn{
-  background:var(--glass);
-  border:1px solid rgba(255,255,255,0.08);
-  color:var(--accent);
-  padding:8px 14px;
-  border-radius:var(--radius);
-  cursor:pointer;
-  transition:var(--transition);
-}
-.back-btn:hover{ border-color:var(--accent); background:rgba(34,255,136,0.08); }
-.score{ color:var(--accent); font-weight:700; font-size:1.05rem; }
-
-/* quiz box */
-.quiz-box{
-  background:rgba(0,0,0,0.4);
-  padding:20px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,0.04);
-  backdrop-filter:blur(6px);
-}
-.q-index{ font-size:.9rem; color:var(--muted); margin-bottom:8px; }
-.q-text{ color:var(--accent); margin-bottom:10px; font-size:1.1rem; }
-.clue{ font-size:.95rem; color:var(--muted); margin-bottom:16px; }
-.options-container{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin-bottom:16px;
-}
-.option{
-  display:flex;
-  gap:12px;
-  align-items:center;
-  background:rgba(255,255,255,0.04);
-  border:2px solid var(--accent-soft);
-  color:#dfffe0;
-  padding:14px;
-  border-radius:10px;
-  cursor:pointer;
-  transition:var(--transition);
-  text-align:left;
-  font-size:.98rem;
-}
-.option:hover{
-  transform:translateY(-6px);
-  background:rgba(34,255,136,0.1);
-  border-color:var(--accent);
-  color:#0b120d;
-}
-.opt-label{ font-weight:800; color:var(--accent); }
-
-/* inputs / buttons */
-.game-input{
-  width:100%;
-  padding:12px 14px;
-  border-radius:var(--radius);
-  border:1px solid rgba(255,255,255,0.06);
-  background:rgba(255,255,255,0.05);
-  color:#eaffea;
-  margin-bottom:12px;
-  transition:var(--transition);
-}
-.game-input:focus{ outline:none; border-color:var(--accent); background:rgba(34,255,136,0.08); }
-.code-actions, .color-btns { display:flex; gap:12px; margin-bottom:10px; }
-.submit-btn, .next-btn, .skip-btn{
-  padding:10px 16px;
-  border-radius:var(--radius);
-  cursor:pointer;
-  font-weight:700;
-  font-size:.95rem;
-  transition:var(--transition);
-}
-.submit-btn{ background:var(--accent); color:#041004; }
-.submit-btn:hover{ filter:brightness(1.15); }
-.next-btn, .skip-btn{ background:transparent; border:1px solid rgba(255,255,255,0.1); color:#e9fff0; }
-.next-btn:hover, .skip-btn:hover{ background:rgba(255,255,255,0.06); border-color:var(--accent); }
-
-/* feedback */
-.feedback{
-  margin-top:10px;
-  padding:8px 12px;
-  border-radius:var(--radius);
-  font-weight:700;
-  font-size:.95rem;
-}
-.feedback.success{ background:rgba(34,255,136,0.12); color:var(--accent); border:1px solid var(--accent-soft); }
-.feedback.error{ background:rgba(255,0,0,0.08); color:#ff9e9e; border:1px solid rgba(255,0,0,0.2); }
-
-/* color box */
-.color-box-area{
-  display:flex;
-  gap:18px;
-  align-items:center;
-  justify-content:center;
-  margin-top:14px;
-  flex-wrap:wrap;
-}
-.color-box{
-  width:240px;
-  height:170px;
-  border-radius:var(--radius);
-  border:3px solid rgba(255,255,255,0.08);
-  box-shadow:inset 0 0 40px rgba(0,0,0,0.45);
-  transition:var(--transition);
-}
-.color-box:hover{ transform:scale(1.03); }
-
-/* logic box */
-.logic-box{
-  background:rgba(0,0,0,0.4);
-  padding:20px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,0.04);
+.subtitle {
+  color: #d6f5dd;
+  font-size: 1.15rem;
+  margin-top: 6px;
 }
 
-/* responsive */
-@media (max-width:720px){
-  .options-container{ grid-template-columns:1fr; }
-  .menu-grid{ grid-template-columns:1fr; }
-  .color-box{ width:100%; height:150px; }
-  .game-content{ padding:12px; }
-  .title{ font-size:2.2rem; }
+/* ===== FIX ICON IN CARD ===== */
+.card-icon {
+  font-size: 2.4rem;
+  color: var(--accent);
+  filter: drop-shadow(0 0 6px var(--accent-soft));
+}
+
+/* ===== TEXT INSIDE CARD ===== */
+.menu-card h2 {
+  font-size: 1.65rem;
+  color: #eaffef;
+  margin-bottom: 4px;
+}
+
+.menu-card p {
+  font-size: 0.95rem;
+  color: #c8e6d3;
+}
+
+/* ===== CARD GRID ===== */
+.menu-grid {
+  gap: 26px;
+  padding: 0 12px;
+  margin-top: 40px;
+}
+
+/* ===== PAGE CENTER FIX ===== */
+.playing-game-content-wrapper {
+  padding-top: 80px;
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 720px) {
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+  .title {
+    font-size: 2.2rem;
+  }
+  .menu-card {
+    padding: 20px;
+  }
+  .card-icon {
+    font-size: 2.2rem;
+  }
+}
+
+
+/* ---- Main Wrapper ---- */
+.playing-game-content-wrapper {
+  min-height: 100vh;
+  background: radial-gradient(circle at 20% 20%, #0f2e21 0%, #06130b 100%);
+  color: #e9fff0;
+  font-family: Inter, system-ui, "Segoe UI", Roboto, Arial;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+}
+
+/* ---- Countdown Overlay ---- */
+.countdown-screen {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.countdown-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.countdown-number {
+  font-size: 5.2rem;
+  font-weight: 900;
+  color: var(--accent);
+  text-shadow: 0 0 28px var(--accent-soft);
+}
+
+.countdown-number.go {
+  font-size: 4.2rem;
+}
+
+/* ---- Content ---- */
+.game-content {
+  width: 100%;
+  max-width: 980px;
+  backdrop-filter: blur(12px);
+}
+
+/* ---- Menu ---- */
+.menu-screen {
+  text-align: center;
+}
+
+.title {
+  font-size: 2.6rem;
+  margin-bottom: .3rem;
+  color: var(--accent);
+  font-weight: 700;
+  text-shadow: 0 0 18px var(--accent-soft);
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.menu-card {
+  background: var(--card-bg);
+  border: 1px solid var(--accent-soft);
+  padding: 24px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-align: left;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+}
+
+.menu-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.65);
+  border-color: var(--accent);
+}
+
+.card-icon {
+  font-size: 1.9rem;
+  color: var(--accent);
+}
+
+/* ---- Game Screen ---- */
+.game-screen {
+  background: var(--card-bg);
+  padding: 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--accent-soft);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+.game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.back-btn {
+  background: var(--glass);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--accent);
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.back-btn:hover {
+  border-color: var(--accent);
+  background: rgba(154, 187, 168, 0.08);
+}
+
+.score {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+/* ---- Quiz ---- */
+.quiz-box {
+  background: rgba(0,0,0,0.4);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.04);
+  backdrop-filter: blur(6px);
+}
+
+.q-index {
+  font-size: .9rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.q-text {
+  color: var(--accent);
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.clue {
+  font-size: .95rem;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.options-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.option {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: rgba(255,255,255,0.04);
+  border: 2px solid var(--accent-soft);
+  color: #dfffe0;
+  padding: 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: left;
+  font-size: .98rem;
+}
+
+.option:hover {
+  transform: translateY(-6px);
+  background: rgba(233, 248, 240, 0.1);
+  border-color: var(--accent);
+  color: #3f5645;
+}
+
+.opt-label {
+  font-weight: 800;
+  color: var(--accent);
+}
+
+/* ---- Inputs & Buttons ---- */
+.game-input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.05);
+  color: #eaffea;
+  margin-bottom: 12px;
+  transition: var(--transition);
+}
+
+.game-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(233, 255, 243, 0.08);
+}
+
+.code-actions, .color-btns {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.submit-btn, .next-btn, .skip-btn {
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: .95rem;
+  transition: var(--transition);
+}
+
+.submit-btn {
+  background: var(--accent);
+  color: #8fd58f;
+}
+
+.submit-btn:hover {
+  filter: brightness(1.15);
+}
+
+.next-btn, .skip-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #e9fff0;
+}
+
+.next-btn:hover, .skip-btn:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: var(--accent);
+}
+
+/* ---- Feedback ---- */
+.feedback {
+  margin-top: 10px;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  font-weight: 700;
+  font-size: .95rem;
+}
+
+.feedback.success {
+  background: rgba(44, 221, 126, 0.12);
+  color: var(--accent);
+  border: 1px solid var(--accent-soft);
+}
+
+.feedback.error {
+  background: rgba(255,0,0,0.08);
+  color: #ff9e9e;
+  border: 1px solid rgba(255,0,0,0.2);
+}
+
+/* ---- Color Box ---- */
+.color-box-area {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.color-box {
+  width: 240px;
+  height: 170px;
+  border-radius: var(--radius);
+  border: 3px solid rgba(255,255,255,0.08);
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.45);
+  transition: var(--transition);
+}
+
+.color-box:hover {
+  transform: scale(1.03);
+}
+
+/* ---- Logic Box ---- */
+.logic-box {
+  background: rgba(0,0,0,0.4);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 720px) {
+  .options-container {
+    grid-template-columns: 1fr;
+  }
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+  .color-box {
+    width: 100%;
+    height: 150px;
+  }
+  .game-content {
+    padding: 12px;
+  }
+  .title {
+    font-size: 2.2rem;
+  }
 }
 </style>

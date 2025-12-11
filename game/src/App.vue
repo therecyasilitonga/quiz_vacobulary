@@ -4,7 +4,7 @@
       <div class="navbar-left">
         <div class="logo-container">
           <img src="./assets/EBT.svg" alt="Game Logo" class="logo-img" />
-          <span class="logo-text">ESCAPE THE BUNKER</span>
+          <span class="logo-text">ENGLISH BRAIN TRAINING</span>
         </div>
         <div
           class="greeting-container"
