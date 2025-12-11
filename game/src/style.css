@@ -1,0 +1,54 @@
+/* src/style.css */
+
+/* Import font jika diperlukan secara global */
+/* Jika Anda mengimpor di komponen, ini bisa dihapus */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+:root {
+  /* Pertahankan font family yang konsisten jika diinginkan */
+  /* Gunakan Press Start 2P untuk elemen UI utama, Arial untuk teks panjang */
+  font-family: 'Press Start 2P', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Quasar akan mengelola color-scheme dan background-color secara global */
+  /* Jika Anda punya background global sendiri, definisikan di body atau di App.vue */
+  /* color-scheme: light dark; */
+  /* color: rgba(255, 255, 255, 0.87); */
+  /* background-color: #242424; */
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Biarkan body minimalis, Quasar akan mengambil alih */
+body {
+  margin: 0;
+  /* Quasar akan menangani min-width, min-height, dan display */
+  /* Jika Anda ingin background khusus untuk seluruh aplikasi, definisikan di sini */
+  background-color: #111; /* Contoh background gelap untuk tema game Anda */
+  color: #fff; /* Contoh warna teks default */
+  font-family: 'Press Start 2P', monospace; /* Terapkan font game secara global */
+}
+
+/* Gaya untuk link - Quasar punya gaya link-nya sendiri, tapi ini bisa jadi override dasar */
+a {
+  font-weight: 500;
+  color: #0f0; /* Warna hijau neon untuk link agar cocok dengan tema game */
+  text-decoration: inherit;
+  transition: color 0.3s ease;
+}
+a:hover {
+  color: #0a0;
+}
+
+/* H1, H2, dll. - Quasar memiliki gaya heading. Ini bisa menjadi gaya override jika Anda mau */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Press Start 2P', monospace;
+  color: #0f0; /* Contoh warna hijau neon untuk heading */
+  line-height: 1.1;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
